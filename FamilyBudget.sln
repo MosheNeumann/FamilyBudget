@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyBudget.web", "FamilyBudget.web\FamilyBudget.web.csproj", "{B36F2961-53CB-4BB0-B30C-77342364A41B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyBudget.data", "FamilyBudget.data\FamilyBudget.data.csproj", "{A6847CEA-043E-4011-8F7E-409F4046F65F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B36F2961-53CB-4BB0-B30C-77342364A41B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B36F2961-53CB-4BB0-B30C-77342364A41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B36F2961-53CB-4BB0-B30C-77342364A41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B36F2961-53CB-4BB0-B30C-77342364A41B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6847CEA-043E-4011-8F7E-409F4046F65F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6847CEA-043E-4011-8F7E-409F4046F65F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6847CEA-043E-4011-8F7E-409F4046F65F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6847CEA-043E-4011-8F7E-409F4046F65F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

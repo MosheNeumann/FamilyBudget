@@ -1,0 +1,28 @@
+﻿
+@{ string email = "";}
+
+<div class="error-message"style="margin-top: 50px;">
+    @if (TempData["unrecognizableEmail"] != null)
+    {
+        <h3 class="text-center" style="color: red;">The Email address or password you used is invalid. Please try again.</h3>
+        email = (string)TempData["unrecognizableEmail"]; 
+    }
+</div>
+
+
+
+<div class="container col-md-offset-3" style="margin-top: 50px;" id="login-form">
+    <div class="Register-button">
+        <p>Don't have an account? <a href="/Home/Register" class="" style="margin: 10px 0;">Register </a>here </p>
+      
+    </div>
+  
+    <form method="post" action="/Home/Login" style="width: 100%;">
+        <input type="text" class="form-control" name="email" placeholder="Email" value="@email" />
+        <br />
+        <input type="password" class="form-control" name="password" placeholder="Password" />
+        <br />
+        <button class="btn btn-primary">Login</button>
+    </form>
+</div>
+

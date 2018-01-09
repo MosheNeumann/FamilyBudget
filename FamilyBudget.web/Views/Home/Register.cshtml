@@ -1,0 +1,62 @@
+﻿@using FamilyBudget.data;
+@using FamilyBudget.web.Models;
+
+@{var registerModel = (RegisterErrorModel)TempData["errorModel"];  }
+  
+   
+
+
+
+<div class="background">
+<div class="container">
+    <h3 class="text-center" style="color: black;">
+       Fill out the your information to start budgeting.
+    </h3>
+    @* Error Message *@
+    @if (registerModel != null)
+    {
+        <h1> @registerModel.ErrorMessage </h1>
+    }
+    else
+    {
+        registerModel = new RegisterErrorModel();
+        registerModel.user = new User();
+    }
+
+    <div class="col-md-offset-4">
+
+        <div class="col-md-6">
+
+            <form action="/Home/Register" method="post" class="well form" id="form">
+                <input type="text" class="form-control" name="FirstName" placeholder="First Name" value="@registerModel.user.FirstName" />
+                <br />
+                <input type="text" class="form-control" name="LastName" placeholder="Last Name" value="" />
+                <br />
+                <input type="email" class="form-control" name="Email" placeholder="Email" id="Email" value="" />
+                <br />
+                <input type="password" class="form-control" name="Password" placeholder="Password" id="password" />
+                <br />
+
+                <input type="password" class="form-control" name="PasswordConfirm" placeholder="Confirm Password" id="confirm" />
+                <label style="color:red;" id="passwodLabel"> </label>
+                <br />
+
+
+                <button id="submit" class="btn btn-primary" disabled="disabled">Submit</button>
+                     
+            </form>
+        </div>
+    </div>
+</div>
+    
+    </div>
+@section styles
+    {
+      <link href="~/Content/register.css" rel="stylesheet" />
+    }
+
+@section scripts
+{
+
+    <script src="~/Scripts/Register.js"></script>
+}

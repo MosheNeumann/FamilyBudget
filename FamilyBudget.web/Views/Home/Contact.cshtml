@@ -1,0 +1,27 @@
+﻿
+
+<div class="container">
+
+    @if (TempData["CommentSent"] != null)
+    {
+        <div class="alert alert-success">
+            <strong class="text-center">
+             Your comment or question has been sent
+                <a href="/">Click here to go to home page</a>
+            </strong>
+        </div>
+    }
+    <h4 class="text-center"style="padding-top:5%;">Fill out the form below to contact us. We will get back to you shortly.</h4>
+    <div class="col-md-offset-4">
+        
+        <form action="/Home/Contact" method="post"style="padding-left:30px;">
+            <input type="text" class="form-control" name="Name" placeholder="Name" />
+            <br />
+            <input type="email" class="form-control" name="email" placeholder="Email" />
+            <br />
+            <textarea name="comment" cols="40" rows="5" placeholder="Question/Comment"></textarea>
+            <br />
+            <button class="btn btn-primary" type="submit">Submit</button> 
+        </form>
+    </div>
+</div>

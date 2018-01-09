@@ -1,0 +1,237 @@
+﻿@using FamilyBudget.data;
+@using FamilyBudget.web.Models;
+@model BudgetViewModel
+
+
+<div class="container">
+
+    <!-- Button trigger modal -->
+    <div id="start new month" style="padding:30px; padding-left:40%;">
+        <button type="button" id="new-month-model-button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Start budgeting a new month
+        </button>
+
+    </div>
+    <div class="row" style="border:1px solid ">
+
+        <h4 class="text-center">Pick a month to view or to add transactions</h4>
+        @* Months that Current user budgeted *@
+        <ul class="months-budgeted" style="padding-top: 10px;">
+
+            @*@if (Model.MonthsBudgeted != null)
+            {
+                foreach (Month_Year M in Model.MonthsBudgeted)
+                {
+                    <li class="month" data-monthid="@M.Id">
+                        <a>@M.Month @M.Year </a>
+                    </li>
+                }
+
+            }*@
+
+
+
+
+        </ul>
+
+    </div>
+    <div id="Credit-debit tables" style="padding-top:150px;" >
+        <div class="col-md-8 col-md-offset-2" >
+            @* Month Showing *@
+            <div id="month-showing" class="text-center">
+                <input type="hidden" value="@Model.LatestMonth.Id" id="month-id" data-currentmonth="" data-curentyear="" />
+                @if (@Model.LatestMonth.Id == 0)
+            {
+                    <h2 hidden class="transaction-month">Transactions For <span class="month-year-showring"></span>  </h2>
+                }
+                else
+                {
+
+
+                    <h2 class="text-center">Transactions For <span class="month-year-showring">@Model.LatestMonth.Month @Model.LatestMonth.Year</span>  </h2>
+
+                }
+            </div>
+
+            @* Add Transaction for Month Showing *@
+            <div class="row">
+                <div id="add-trasaction" class="">
+                    @* Add Credit *@
+                    <div class="new-credit col-md-3">
+                        <input type="number" class="form-control amount" id="creditInputAmount" placeholder="Amount" style="width:150px;" /> <input type="text" class="form-control" id="credit-source" placeholder="Source" style="width:150px;" />
+                        <input type="date" class="form-control date-range" placeholder="Date MM/DD/YYYY" id="creditInputDate" style="width:150px;" />
+                        <button class="btn btn-success" id="add-credit" type="button">Add Income</button>
+                    </div>
+                    @* Add Debit *@
+                    <div class="add-credit" style="float:right; padding-left: 0px; padding-left:0px;">
+
+                        <input type="number" class="form-control amount" id="debitInputAmount" placeholder="Amount" style="width:150px;" /> <input type="text" class="form-control" id="details" placeholder="Details" style="width:150px;" />
+                        <input type="date" class="form-control date-range" placeholder="Date MM/DD/YYYY" id="debitInputDate" style="width:150px;" />
+                        <select id="debit-category" class="form-control" style="width:150px;">
+                            <option disabled" value="0">Pick a category</option>
+                            @foreach (Category C in Model.AllCategories)
+                            {
+                                <option value="@C.Id">@C.CategoryName</option>
+                            }
+                        </select>
+                        <button class="btn btn-danger" id="add-debit" type="button">Add Expense</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @* Credit Table *@
+        <div id="credit-table" style="padding-top:250px;">
+            <h3 class="text-center">Income</h3>
+            <table id="credits-table" class="table table-bordered table-hover table-condensed">
+                <tr>
+
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Source</th>
+                    <th>Actions</th>
+                </tr>
+
+                @if(Model.CreditsForLastMonth != null)
+        {
+            foreach(Credit C in Model.CreditsForLastMonth)
+            {
+                <tr>
+                    <td>@C.Amount.ToString("C")</td>
+                    <td>@C.Date.ToShortDateString()</td>
+                    <td>@C.Source</td>
+                    <td><button data-creditId="@C.Id" class="btn btn-primary">Delete</button></td>
+                </tr>
+            }
+        }
+            </table>
+@if (Model.CreditsForLastMonth != null)
+{
+    <h4 class="transaction-month" @*hidden="@Model.LatestMonth.Id == 0"*@>Total income for <span id="month-year-showring" class="month-year-showring">@Model.LatestMonth.Month @Model.LatestMonth.Year</span>: <span id="total-credit">@Model.CreditsForLastMonth.Sum(C => C.Amount).ToString("C")</span></h4>
+
+}
+else
+{
+    <h4 hidden class="transaction-month">Total income for <span id="month-year-showring" class="month-year-showring"></span>: <span id="total-credit">@Model.LatestMonth.Id.ToString("C")</span></h4>
+
+}
+
+
+
+        </div>
+
+
+        @* Debit Table *@
+        <div id="debitTable">
+            <h3 class="text-center">Expenses</h3>
+            <table id="debit-table" class="table table-bordered table-hover table-condensed">
+                <tr>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Detail</th>
+                </tr>
+                @if (Model.DebitsForLatestMonth != null)
+                {
+                    foreach (Debit D in Model.DebitsForLatestMonth)
+                    {
+                        <tr>
+                            <td>@D.Amount.ToString("C")</td>
+                            <td>@D.Date.ToShortDateString()</td>
+                            <td>@D.Category.CategoryName</td>
+                            <td>@D.Details</td>
+                        </tr>
+                    }
+                }
+            </table>
+@if (Model.DebitsForLatestMonth != null)
+{
+    <h4 class="transaction-month">Total Expenses for <span class="month-year-showring">@Model.LatestMonth.Month @Model.LatestMonth.Year</span>: <span id="total-expense">@Model.DebitsForLatestMonth.Sum(C => C.Amount).ToString("C")</span></h4>
+
+}
+else
+{
+    <h4 hidden class="transaction-month">Total Expenses for <span class="month-year-showring"></span>: <span id="total-expense">@Model.LatestMonth.Id.ToString("C")</span></h4>
+
+}
+
+        </div>
+        @if (Model.DebitsForLatestMonth != null)
+        {
+
+            <div id="available-income" >
+                @*<h3 class="text-center">Total available income for <span class="month-year-showring">@Model.LatestMonth.Month @Model.LatestMonth.Year</span>: <span id="total-available"></span> </h3>*@
+                <h3 id="total-available" class="text-center"></h3>
+            </div>
+        }
+        else
+        {
+            <div id="available-income" hidden>
+                @*<h3 class="text-center">Total available income for <span class="month-year-showring">@Model.LatestMonth.Month @Model.LatestMonth.Year</span>: <span id="total-available"></span> </h3>*@
+                <h3 id="total-available" class="text-center"></h3>
+            </div>
+
+
+        }
+
+    </div>
+    <div id="pie-container">
+       <canvas id="myPieChart"></canvas>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Track the spending for another month</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <row class="text-center">
+                    <div class="col-sm-offset-1 col-sm-9">
+
+                        @* select Month *@
+                        <select name="month" id="month" class="add-month">
+                            @{int index = 0; }
+                            @foreach (Month M in Enum.GetValues(typeof(Month)))
+                            {
+                                <option data-monthnumber="@index" value="@M">@M</option>
+                                index++;
+                            }
+                        </select>
+                        @* select year *@
+                        <select name="year" id="year" style="padding-right:20px;" class="add-year">
+                            @{int currentYear = int.Parse(DateTime.Now.Year.ToString());}
+                            @for (int x = currentYear; x >= currentYear - 3; x--)
+                            {
+                                <option value="@x">@x</option>
+                            }
+                        </select>
+                        <input type="hidden" class="userId" value="@Model.CurrentUser.Id" />
+                    </div>
+                </row>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="addMonthButton" class="btn btn-primary">Add Month</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section styles
+    {
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+}
+
+@section scripts 
+    {
+    
+        <script src="~/Scripts/budget.js"></script>
+    }
