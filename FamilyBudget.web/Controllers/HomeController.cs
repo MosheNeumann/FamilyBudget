@@ -43,7 +43,7 @@ namespace FamilyBudget.web.Controllers
         {
             var fromAddress = new MailAddress("online.familybudget@gmail.com", Name);
             var toAddress = new MailAddress("online.familybudget@gmail.com", "Moshe");
-            const string fromPassword = "firstliveproject";
+            const string fromPassword = "";
             const string subject = "New question/comment on familybudgeting";
             string body = "From: " + email + "comment: " + comment;
             var smtp = new SmtpClient
