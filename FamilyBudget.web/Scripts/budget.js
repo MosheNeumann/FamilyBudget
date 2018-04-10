@@ -39,6 +39,7 @@
                 $('#available-income').show();
                 $('#debit-table tr:gt(0)').remove();
                 $('#credits-table tr:gt(0)').remove();
+
             }
             
         });
@@ -46,6 +47,7 @@
 
     // switch month
     $('.months-budgeted').on('click', '.month', function () {
+        defaultDebitTableDropDown();
  
         //passing in the function (db month id, month name and year e.g. December 2017, month number e.g. jan = 1, year )
         switchMonthBudgeting($(this).data('monthid'), $(this).text(), $(this).data('monthnum'), $(this).data('year'));
@@ -153,6 +155,15 @@
 
     });
 
+
+    //gets the selected value when user changes category in debit table
+    $('#category').change(function () {
+      
+        showSelectedDebitRows($(this).val());
+
+    });
+
+    
     //functions 
 
     // builds the HTML for a new month
@@ -353,12 +364,96 @@
         });
     }
 
+    //only shows rows  from debit table that are un the user selected category
+
+    function showSelectedDebitRows(selectedeCategory) {     // i still want to add the option of getting the total of the categorie selected
+
+        // $('#debit-table tr').each(function (row, tr) {
+        var total = Number();
+
+        $('#debit-table tr:gt(0)').each(function () {
+            $(this).show();
+        });
+
+        if (selectedeCategory === 'allCategories') {
+            defaultDebitTableDropDown();
+            return;
+        }
 
 
-   
+        $('#debit-table tr:gt(0)').each(function () {
+            var categoryForRow = $(this).find('td:eq(2)').text();
+            if (categoryForRow != selectedeCategory) {
+                $(this).hide();
+            }
+                //the below add the total for the selected category
+            else {
+                var amount = $(this).find('td:eq(0)').text().substring(1);
+                amount = removeCommas(amount);
 
- 
+                total = +total + +amount;
+            }
 
+        });
+        showTotalForCategory(selectedeCategory,total);
+       
+    }
+
+
+    // i want to show the total for category. then create  a new function that will unhide all rows and hide the total for the category
+    function showTotalForCategory(selectedCategory, total) {
+        $('#totalCategoryName').text(selectedCategory);
+        $('#totalCategoryAmount').text(parseNumberToCurrency(total));
+        $('#totalForCategory').show();
+       
+
+        console.log(total);
+
+    }
+
+    // $('#category')
+    function defaultDebitTableDropDown() {
+        $('#category option[value="allCategories"]').attr("selected", true);
+        hideTotalForCategory();
+    }
+
+    function hideTotalForCategory() {
+        $('#totalCategoryName').text('');
+        $('#totalCategoryAmount').text('');
+        $('#totalForCategory').hide();
+
+    }
+
+    $('#parseTable').click(function () {
+        console.log('clicked parse button');
+
+        console.log(getDebiTableInArray());
+    })
+
+    //i do not use this function. this is just to to get all cells in the debit table into an array
+    function getDebiTableInArray() {
+
+        var debitTableData = [];
+
+        $('#debit-table tr').each(function (row, tr) {
+
+            var line = {
+                amount: $(tr).find('td:eq(0)').text(),
+                date: $(tr).find('td:eq(1)').text(),
+                category: $(tr).find('td:eq(2)').text(),
+                detail: $(tr).find('td:eq(3)').text()
+            }
+            debitTableData.push(line);
+          
+
+        });
+
+        //removes first row in array
+        debitTableData.shift();
+
+        return debitTableData;
+
+    }
 
 });
 

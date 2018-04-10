@@ -168,7 +168,7 @@ namespace FamilyBudget.web.Controllers
             debits = Debits.Select(D => new
             {
                 id = D.Id,
-                amount = D.Amount,
+                amount = D.Amount.ToString("C"),
                 date = D.Date,
                 category = D.Category.CategoryName,
                 detail = D.Details

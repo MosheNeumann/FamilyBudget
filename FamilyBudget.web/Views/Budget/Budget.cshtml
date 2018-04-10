@@ -67,7 +67,7 @@
 
                         <input type="number" class="form-control amount" id="debitInputAmount" placeholder="Amount" style="width:150px;" /> <input type="text" class="form-control" id="details" placeholder="Details" style="width:150px;" />
                         <input type="date" class="form-control date-range" placeholder="Date MM/DD/YYYY" id="debitInputDate" style="width:150px;" />
-                        <select id="debit-category" class="form-control" style="width:150px;">
+                        <select  id="debit-category" class="form-control" style="width:150px;">
                             <option disabled" value="0">Pick a category</option>
                             @foreach (Category C in Model.AllCategories)
                             {
@@ -83,26 +83,29 @@
         <div id="credit-table" style="padding-top:250px;">
             <h3 class="text-center">Income</h3>
             <table id="credits-table" class="table table-bordered table-hover table-condensed">
-                <tr>
+                <thead>
+                    <tr>
 
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Source</th>
-                    <th>Actions</th>
-                </tr>
-
-                @if(Model.CreditsForLastMonth != null)
-        {
-            foreach(Credit C in Model.CreditsForLastMonth)
-            {
-                <tr>
-                    <td>@C.Amount.ToString("C")</td>
-                    <td>@C.Date.ToShortDateString()</td>
-                    <td>@C.Source</td>
-                    <td><button data-creditId="@C.Id" class="btn btn-primary">Delete</button></td>
-                </tr>
-            }
-        }
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Source</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+              
+                    @if (Model.CreditsForLastMonth != null)
+                    {
+                        foreach (Credit C in Model.CreditsForLastMonth)
+                        {
+                            <tr>
+                                <td>@C.Amount.ToString("C")</td>
+                                <td>@C.Date.ToShortDateString()</td>
+                                <td>@C.Source</td>
+                                <td><button data-creditId="@C.Id" class="btn btn-primary">Delete</button></td>
+                            </tr>
+                        }
+                    }
+              
             </table>
 @if (Model.CreditsForLastMonth != null)
 {
@@ -127,7 +130,14 @@ else
                 <tr>
                     <th>Amount</th>
                     <th>Date</th>
-                    <th>Category</th>
+                    <th><select id="category">
+                        <option value="allCategories">All Categories</option>
+                        @foreach (Category C in Model.AllCategories)
+                        {
+                            <option value="@C.CategoryName">@C.CategoryName</option>
+                        }
+                        </select>
+                   </th>
                     <th>Detail</th>
                 </tr>
                 @if (Model.DebitsForLatestMonth != null)
@@ -143,6 +153,11 @@ else
                     }
                 }
             </table>
+            
+            <div hidden id="totalForCategory">
+                <h5>Total <span class="month-year-showring"></span> expenses for <span id="totalCategoryName" style="color:blue"></span>: <span id="totalCategoryAmount"></span>  </h5>
+            </div>
+            
 @if (Model.DebitsForLatestMonth != null)
 {
     <h4 class="transaction-month">Total Expenses for <span class="month-year-showring">@Model.LatestMonth.Month @Model.LatestMonth.Year</span>: <span id="total-expense">@Model.DebitsForLatestMonth.Sum(C => C.Amount).ToString("C")</span></h4>
@@ -157,7 +172,7 @@ else
         </div>
         @if (Model.DebitsForLatestMonth != null)
         {
-
+            
             <div id="available-income" >
                 @*<h3 class="text-center">Total available income for <span class="month-year-showring">@Model.LatestMonth.Month @Model.LatestMonth.Year</span>: <span id="total-available"></span> </h3>*@
                 <h3 id="total-available" class="text-center"></h3>
